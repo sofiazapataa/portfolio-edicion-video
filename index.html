@@ -204,8 +204,16 @@
   .clips-group-desc { font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 640px; margin: -4px 0 16px; }
   .clips-label { font-family: var(--font-mono); font-size: 10.5px; color: var(--subtle); letter-spacing: 0.06em; text-transform: uppercase; margin: 22px 0 10px; }
   .clips-grid { display: grid; gap: 12px; }
-  .clips-grid--wide { grid-template-columns: repeat(3, 1fr); }
-  .clips-grid--tall { grid-template-columns: repeat(4, 1fr); }
+  .strip-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 26px 0 12px; }
+  .strip-head .clips-label { margin: 0 0 2px; color: var(--ink); font-size: 11.5px; }
+  .strip-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--subtle); letter-spacing: 0.04em; }
+  .strip-nav { display: flex; gap: 6px; }
+  .strip-nav button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-strong); background: transparent; color: var(--ink); cursor: pointer; font-size: 15px; }
+  .strip-nav button:hover { border-color: var(--accent); color: var(--accent); }
+  .clips-strip { display: grid; grid-auto-flow: column; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+  .clips-strip .clip-tile { scroll-snap-align: start; }
+  .clips-strip--wide { grid-auto-columns: minmax(300px, 38%); }
+  .clips-strip--tall { grid-auto-columns: minmax(150px, 19%); }
   .clips-grid--mixed { grid-template-columns: repeat(2, minmax(0, 300px)); align-items: start; }
   .clip-tile { position: relative; margin: 0; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid var(--border); cursor: pointer; }
   .clip-tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -223,8 +231,8 @@
   .clip-feature { aspect-ratio: 16/9; margin-bottom: 0; }
 
   @media (max-width: 760px) {
-    .clips-grid--wide { grid-template-columns: 1fr 1fr; }
-    .clips-grid--tall { grid-template-columns: 1fr 1fr; }
+    .clips-strip--wide { grid-auto-columns: 80%; }
+    .clips-strip--tall { grid-auto-columns: 44%; }
     .clips-grid--mixed { grid-template-columns: 1fr 1fr; }
   }
 
@@ -405,8 +413,11 @@
         <p class="clips-group-desc">Serie de videos ASMR de camping con un perro: ruta, llegada al lago, armado del campamento, cocina al aire libre y fogata. Cada plano generado en dos formatos, 16:9 para YouTube y 9:16 para Reels y TikTok, manteniendo el mismo personaje, perro y vehículo.</p>
         <p class="clips-label">Primer corte · 0:36</p>
         <figure class="clip-tile clip-feature"><video muted loop playsinline preload="none" poster="assets/clips/asmr-roughcut.jpg" src="assets/clips/asmr-roughcut.mp4"></video><figcaption><span>Video 01 · rough cut</span><span class="sound">♪ click</span></figcaption></figure>
-        <p class="clips-label">Planos 16:9</p>
-        <div class="clips-grid clips-grid--wide">
+        <div class="strip-head">
+          <div><p class="clips-label">Planos 16:9</p><span class="strip-meta">YouTube · 7 clips</span></div>
+          <div class="strip-nav"><button type="button" data-strip="strip-h" data-dir="-1" aria-label="Anteriores">←</button><button type="button" data-strip="strip-h" data-dir="1" aria-label="Siguientes">→</button></div>
+        </div>
+        <div class="clips-strip clips-strip--wide" id="strip-h">
           <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-ruta.jpg" src="assets/clips/asmr-h-ruta.mp4"></video><figcaption><span>Ruta de montaña</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-copiloto.jpg" src="assets/clips/asmr-h-copiloto.mp4"></video><figcaption><span>Copiloto</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-lago.jpg" src="assets/clips/asmr-h-lago.mp4"></video><figcaption><span>Llegada al lago</span><span class="sound">♪ click</span></figcaption></figure>
@@ -415,22 +426,25 @@
           <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-perro-bosque.jpg" src="assets/clips/asmr-h-perro-bosque.mp4"></video><figcaption><span>Perro en el bosque</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-cafe.jpg" src="assets/clips/asmr-h-cafe.mp4"></video><figcaption><span>Café en el campamento</span><span class="sound">♪ click</span></figcaption></figure>
         </div>
-        <p class="clips-label">Planos 9:16</p>
-        <div class="clips-grid clips-grid--tall">
+        <div class="strip-head">
+          <div><p class="clips-label">Planos 9:16</p><span class="strip-meta">Reels y TikTok · 16 clips</span></div>
+          <div class="strip-nav"><button type="button" data-strip="strip-v" data-dir="-1" aria-label="Anteriores">←</button><button type="button" data-strip="strip-v" data-dir="1" aria-label="Siguientes">→</button></div>
+        </div>
+        <div class="clips-strip clips-strip--tall" id="strip-v">
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-ruta.jpg" src="assets/clips/asmr-v-ruta.mp4"></video><figcaption><span>Ruta</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-copiloto.jpg" src="assets/clips/asmr-v-copiloto.mp4"></video><figcaption><span>Copiloto</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-lago.jpg" src="assets/clips/asmr-v-lago.mp4"></video><figcaption><span>Lago</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-lago.jpg" src="assets/clips/asmr-v-perro-lago.mp4"></video><figcaption><span>Perro en el lago</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-mesa.jpg" src="assets/clips/asmr-v-mesa.mp4"></video><figcaption><span>Mesa</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-campamento.jpg" src="assets/clips/asmr-v-campamento.mp4"></video><figcaption><span>Campamento</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-bosque.jpg" src="assets/clips/asmr-v-perro-bosque.mp4"></video><figcaption><span>Perro en el bosque</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-desayuno.jpg" src="assets/clips/asmr-v-desayuno.mp4"></video><figcaption><span>Desayuno</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-huevos.jpg" src="assets/clips/asmr-v-huevos.mp4"></video><figcaption><span>Huevos a la plancha</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-lago.jpg" src="assets/clips/asmr-v-perro-lago.mp4"></video><figcaption><span>Perro en el lago</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-atardecer.jpg" src="assets/clips/asmr-v-atardecer.mp4"></video><figcaption><span>Atardecer</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-parrilla.jpg" src="assets/clips/asmr-v-parrilla.mp4"></video><figcaption><span>Parrilla</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-cena-perro.jpg" src="assets/clips/asmr-v-cena-perro.mp4"></video><figcaption><span>Cena del perro</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-descanso.jpg" src="assets/clips/asmr-v-descanso.mp4"></video><figcaption><span>Descanso</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-pescado.jpg" src="assets/clips/asmr-v-pescado.mp4"></video><figcaption><span>Pescado</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-parrilla.jpg" src="assets/clips/asmr-v-parrilla.mp4"></video><figcaption><span>Parrilla</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-atardecer.jpg" src="assets/clips/asmr-v-atardecer.mp4"></video><figcaption><span>Atardecer</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-descanso.jpg" src="assets/clips/asmr-v-descanso.mp4"></video><figcaption><span>Descanso</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-cena-perro.jpg" src="assets/clips/asmr-v-cena-perro.mp4"></video><figcaption><span>Cena del perro</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-noche.jpg" src="assets/clips/asmr-v-perro-noche.mp4"></video><figcaption><span>Perro de noche</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-fogata.jpg" src="assets/clips/asmr-v-fogata.mp4"></video><figcaption><span>Fogata</span><span class="sound">♪ click</span></figcaption></figure>
         </div>
@@ -513,6 +527,13 @@
       document.querySelectorAll('.clip-tile video').forEach(function (o) { o.muted = true; });
       v.muted = !unmute;
       v.play().catch(function () {});
+    });
+  });
+  // Clips: arrows scroll each strip by most of its visible width.
+  document.querySelectorAll('.strip-nav button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var strip = document.getElementById(b.getAttribute('data-strip'));
+      strip.scrollBy({ left: strip.clientWidth * 0.8 * Number(b.getAttribute('data-dir')), behavior: 'smooth' });
     });
   });
 </script>
