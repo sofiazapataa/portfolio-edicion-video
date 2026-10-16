@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sofi Zapata — Editora de Video · Generación de video con IA</title>
+<meta name="description" content="Portfolio de edición de video de Sofi Zapata: reels, campañas de marca y piezas generadas con IA, freelance video editor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0e;
+    --surface: #17171a;
+    --elevated: #1e1e21;
+    --ink: #f5f2ea;
+    --ink-2: #d6d3cc;
+    --muted: #a19d95;
+    --subtle: #8d8a83;
+    --border: rgba(245, 242, 234, 0.14);
+    --border-strong: rgba(245, 242, 234, 0.22);
+    --accent: #ff7a55;
+    --accent-strong: #ff5a2e;
+    --accent-ink: #0d0d0e;
+    --success: #22a862;
+    --font-sans: "Manrope", system-ui, sans-serif;
+    --font-display: "Space Grotesk", "Manrope", sans-serif;
+    --font-serif: "Instrument Serif", Georgia, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink-2);
+    font-family: var(--font-sans); line-height: 1.5;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(13, 13, 14, 0.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--ink); text-decoration: none; }
+  .nav-brand span { color: var(--accent); }
+  .nav-links { display: flex; gap: 22px; align-items: center; }
+  .nav-links a {
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.cta {
+    color: var(--accent-ink); background: var(--accent); padding: 8px 14px; border-radius: 999px; font-weight: 600;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; height: 88vh; min-height: 560px; display: flex; align-items: flex-end; overflow: hidden; }
+  .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(13,13,14,0.35) 0%, rgba(13,13,14,0.55) 55%, rgba(13,13,14,0.96) 100%);
+  }
+  .hero-content { position: relative; z-index: 2; padding-bottom: 56px; width: 100%; }
+  .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); display: inline-block; flex-shrink: 0; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 999px;
+    background: rgba(245,242,234,0.08); border: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.02em;
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 700; color: var(--ink);
+    font-size: clamp(38px, 6vw, 72px); line-height: 1; letter-spacing: -0.02em; margin: 16px 0 6px;
+  }
+  .hero h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--accent); }
+  .hero-sub { max-width: 560px; font-size: 16px; color: var(--muted); line-height: 1.6; margin-top: 10px; }
+  .hero-ctas { display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 13px 20px; border-radius: 10px;
+    font-family: var(--font-sans); font-weight: 600; font-size: 14px; text-decoration: none; border: 1px solid transparent;
+  }
+  .btn--primary { background: var(--accent); color: var(--accent-ink); }
+  .btn--outline { background: transparent; border-color: var(--border-strong); color: var(--ink); }
+
+  /* ---------- Section shell ---------- */
+  section { padding: 64px 0; }
+  .sec-head { margin-bottom: 32px; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; padding: 5px 12px;
+    border-radius: 999px; background: rgba(255,122,85,0.1); border: 1px solid rgba(255,122,85,0.25);
+  }
+  .sec-title { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.4vw, 38px); color: var(--ink); letter-spacing: -0.015em; margin: 14px 0 0; }
+  .sec-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--accent); }
+  .sec-intro { max-width: 560px; font-size: 15px; color: var(--muted); margin-top: 12px; line-height: 1.65; }
+
+  /* ---------- Featured case ---------- */
+  .case {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 0;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 22px; overflow: hidden;
+  }
+  .case-media { position: relative; aspect-ratio: 16/10; background: #000; }
+  .case-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .case-tag {
+    position: absolute; top: 14px; left: 14px; z-index: 2;
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px;
+    background: rgba(13,13,14,0.65); backdrop-filter: blur(6px);
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #fff;
+  }
+  .case-body { padding: 34px 32px; display: flex; flex-direction: column; }
+  .case-label { font-family: var(--font-mono); font-size: 11px; color: var(--subtle); letter-spacing: 0.06em; text-transform: uppercase; }
+  .case-title { font-family: var(--font-display); font-weight: 600; font-size: 26px; color: var(--ink); margin: 8px 0 2px; letter-spacing: -0.01em; }
+  .case-duration { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); }
+  .case-summary { font-size: 13.5px; line-height: 1.68; color: var(--ink-2); margin-top: 16px; }
+  .case-process { font-size: 12.5px; line-height: 1.62; color: var(--muted); margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .case-process strong { color: var(--ink-2); font-weight: 600; }
+  .case-ctas { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+
+  /* ---------- Work grid ---------- */
+  .work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .reel-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .reel-media { position: relative; aspect-ratio: 9/13; background: #000; }
+  .reel-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .reel-badge {
+    position: absolute; top: 12px; left: 12px; z-index: 2;
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px;
+    background: rgba(13,13,14,0.62); backdrop-filter: blur(6px);
+    font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.04em; color: #fff;
+  }
+  .reel-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  .reel-duration {
+    position: absolute; bottom: 10px; right: 10px; z-index: 2;
+    font-family: var(--font-mono); font-size: 9.5px; color: rgba(255,255,255,0.9);
+    background: rgba(13,13,14,0.5); padding: 2px 7px; border-radius: 999px;
+  }
+  .reel-body { padding: 16px 17px; }
+  .reel-title { font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--ink); letter-spacing: -0.01em; }
+  .reel-desc { font-size: 12px; line-height: 1.5; color: var(--muted); margin-top: 5px; }
+  .reel-process { font-size: 11px; line-height: 1.5; color: var(--subtle); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .reel-process strong { color: var(--ink-2); }
+
+  /* Campaign card spans full width with 3 clips inline */
+  .campaign { grid-column: 1 / -1; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 22px; }
+  .campaign-head { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  .campaign-tag {
+    display: inline-flex; padding: 5px 11px; border-radius: 999px; background: var(--accent); color: var(--accent-ink);
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.03em;
+  }
+  .campaign-title { font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--ink); margin: 10px 0 4px; }
+  .campaign-desc { font-size: 13px; color: var(--muted); max-width: 620px; line-height: 1.6; }
+  .campaign-clips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 6px; }
+  .clip { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--elevated); }
+  .clip-media { position: relative; aspect-ratio: 9/16; background: #000; }
+  .clip-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .clip-step {
+    position: absolute; top: 10px; left: 10px; z-index: 2;
+    font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: #fff;
+    background: rgba(13,13,14,0.6); padding: 3px 8px; border-radius: 999px;
+  }
+  .clip-body { padding: 10px 12px; }
+  .clip-role { font-family: var(--font-sans); font-weight: 700; font-size: 12px; color: var(--ink); }
+  .clip-note { font-size: 10.5px; color: var(--subtle); line-height: 1.45; margin-top: 3px; }
+  .campaign-process { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .campaign-process strong { color: var(--ink-2); }
+
+  /* ---------- Stack ---------- */
+  .stack-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .stack-chip {
+    display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--border);
+    font-family: var(--font-sans); font-weight: 600; font-size: 13px; color: var(--ink-2);
+  }
+  .stack-chip img { width: 16px; height: 16px; border-radius: 3px; object-fit: contain; }
+
+  /* ---------- Contact / footer ---------- */
+  .contact-block {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 22px;
+    padding: 44px 36px; text-align: center;
+  }
+  .contact-block h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.6vw, 36px); color: var(--ink); margin: 0 0 10px; letter-spacing: -0.01em; }
+  .contact-block h2 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--accent); }
+  .contact-block p { color: var(--muted); font-size: 14.5px; max-width: 460px; margin: 0 auto 24px; }
+  .contact-ctas { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .footnote { font-family: var(--font-mono); font-size: 11px; color: var(--subtle); margin-top: 16px; letter-spacing: 0.02em; }
+
+  .site-footer { padding: 36px 0 48px; text-align: center; }
+  .site-footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .social-row { display: flex; gap: 16px; }
+  .social-row a { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); text-decoration: none; letter-spacing: 0.02em; }
+  .social-row a:hover { color: var(--ink); }
+  .site-footer .fine { font-family: var(--font-mono); font-size: 10.5px; color: var(--subtle); }
+
+  @media (max-width: 760px) {
+    .case { grid-template-columns: 1fr; }
+    .work-grid { grid-template-columns: 1fr; }
+    .campaign-clips { grid-template-columns: 1fr; }
+    .hero { height: auto; min-height: 100vh; padding-top: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="nav-brand" href="#top">SZ<span>.</span> Edición de Video</a>
+    <div class="nav-links">
+      <a href="#trabajo">Trabajo</a>
+      <a href="#stack">Stack</a>
+      <a href="https://portfolio-2026-phi-ecru.vercel.app" target="_blank" rel="noopener noreferrer">Portfolio principal</a>
+      <a class="cta" href="mailto:sofizapata2004@gmail.com">Escribime</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <video autoplay muted loop playsinline preload="metadata"
+    poster="https://portfolio-2026-phi-ecru.vercel.app/assets/covers/las-golondrinas-poster.png"
+    src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/las-golondrinas-hero.mp4"></video>
+  <div class="wrap hero-content">
+    <span class="pill"><span class="pulse-dot"></span>Disponible para trabajos freelance · Argentina</span>
+    <h1>Edición de video<br><em>&amp; generación con IA</em></h1>
+    <p class="hero-sub">Genero, edito y armo piezas de video con inteligencia artificial, de la idea al resultado final — reels, campañas de marca y contenido pensado para Instagram, TikTok o presentaciones.</p>
+    <div class="hero-ctas">
+      <a class="btn btn--primary" href="#trabajo">Ver trabajo</a>
+      <a class="btn btn--outline" href="mailto:sofizapata2004@gmail.com">Consultar por edición</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="trabajo">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Proyecto destacado</span>
+        <h2 class="sec-title">Del brief al <em>resultado final</em></h2>
+      </div>
+
+      <div class="case">
+        <div class="case-media">
+          <span class="case-tag">Generado con Higgsfield AI</span>
+          <video muted loop playsinline preload="metadata"
+            poster="https://portfolio-2026-phi-ecru.vercel.app/assets/covers/las-golondrinas-poster.png"
+            src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/las-golondrinas-hero.mp4"></video>
+        </div>
+        <div class="case-body">
+          <span class="case-label">Proyecto destacado</span>
+          <h3 class="case-title">Las Golondrinas</h3>
+          <span class="case-duration">0:08 · Horizontal 16:9</span>
+          <p class="case-summary">Pieza audiovisual para la primera pantalla del rediseño web de Posada y Spa Las Golondrinas (Sierra de la Ventana): un video corto en loop que le da movimiento y atmósfera al hero, reforzando la sensación de calma y naturaleza de la marca desde el primer segundo.</p>
+          <p class="case-process"><strong>Cómo se hizo:</strong> Higgsfield AI es una plataforma de generación de video con inteligencia artificial especializada en animar imágenes fijas (imagen a video), agregando movimiento de cámara y de elementos del entorno —nubes, luz, vegetación— sin perder fidelidad al diseño original. Se partió de la imagen final del hero ya diseñada para el sitio y se generó el clip con ese modelo; después se optimizó el archivo y se integró como fondo de video en loop, con autoplay silencioso, en el hero del sitio rediseñado.</p>
+          <div class="case-ctas">
+            <a class="btn btn--primary" href="https://re-diseno-golondrinas-posadas.vercel.app/" target="_blank" rel="noopener noreferrer">Ver sitio rediseñado</a>
+            <a class="btn btn--outline" href="https://las-golondrinas-caso-estudio.vercel.app/" target="_blank" rel="noopener noreferrer">Ver caso de estudio</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Últimas piezas</span>
+        <h2 class="sec-title">Ejemplos <em>recientes</em></h2>
+        <p class="sec-intro">Tres formatos distintos: campaña de producto, contenido de marca con mascota animada y storytelling explicativo — todos generados y editados con IA.</p>
+      </div>
+
+      <div class="work-grid">
+
+        <div class="campaign">
+          <div class="campaign-head">
+            <div>
+              <span class="campaign-tag">Campaña · 3 piezas</span>
+              <h3 class="campaign-title">Furlo</h3>
+              <p class="campaign-desc">Campaña de 3 piezas para un guante quita-pelos de mascotas.</p>
+            </div>
+          </div>
+          <div class="campaign-clips">
+            <div class="clip">
+              <div class="clip-media">
+                <span class="clip-step">01 · Gancho</span>
+                <video muted loop playsinline preload="metadata"
+                  poster="https://portfolio-2026-phi-ecru.vercel.app/assets/covers/furlo-01-hook.webp"
+                  src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/furlo-01-hook.mp4"></video>
+              </div>
+              <div class="clip-body">
+                <div class="clip-role">0:18</div>
+                <div class="clip-note">Abre con el problema: el sillón cubierto de pelo y el antes y después en pocos segundos.</div>
+              </div>
+            </div>
+            <div class="clip">
+              <div class="clip-media">
+                <span class="clip-step">02 · UGC</span>
+                <video muted loop playsinline preload="metadata"
+                  poster="https://portfolio-2026-phi-ecru.vercel.app/assets/covers/furlo-02-ugc.webp"
+                  src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/furlo-02-ugc.mp4"></video>
+              </div>
+              <div class="clip-body">
+                <div class="clip-role">0:18</div>
+                <div class="clip-note">Pieza tipo testimonial en un living real, con el producto en uso sobre el perro.</div>
+              </div>
+            </div>
+            <div class="clip">
+              <div class="clip-media">
+                <span class="clip-step">03 · Producto</span>
+                <video muted loop playsinline preload="metadata"
+                  poster="https://portfolio-2026-phi-ecru.vercel.app/assets/covers/furlo-03-producto.webp"
+                  src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/furlo-03-producto.mp4"></video>
+              </div>
+              <div class="clip-body">
+                <div class="clip-role">0:20</div>
+                <div class="clip-note">Cierre en clave de producto: planos detalle del guante, textura y terminación.</div>
+              </div>
+            </div>
+          </div>
+          <p class="campaign-process"><strong>Cómo se hizo:</strong> Definición del embudo y del guion de las tres piezas, diseño del producto y de los sets con IA de imagen para mantener el mismo guante y el mismo living en todos los planos, generación de cada plano en video a partir de esas referencias, y armado final en CapCut con una misma paleta de subtítulos, ritmo y música.</p>
+        </div>
+
+        <div class="reel-card">
+          <div class="reel-media">
+            <span class="reel-badge"><span class="dot"></span>Generado con IA</span>
+            <span class="reel-duration">0:28</span>
+            <video muted loop playsinline preload="metadata"
+              poster="https://portfolio-2026-phi-ecru.vercel.app/uploads/hf_20260709_232147_60d5269c-7129-42e1-9870-a448ce3d5b8e.png"
+              src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/kyvrapets.mp4"></video>
+          </div>
+          <div class="reel-body">
+            <div class="reel-title">Kyvrapets</div>
+            <p class="reel-desc">Mascota animada para una marca de cuidado dental canino. Vertical 9:16.</p>
+            <p class="reel-process"><strong>Cómo se hizo:</strong> Diseño del personaje y del set con IA de imagen, generación de cada plano en video a partir de esas referencias, y edición, subtítulos y ritmo en CapCut.</p>
+          </div>
+        </div>
+
+        <div class="reel-card">
+          <div class="reel-media">
+            <span class="reel-badge"><span class="dot"></span>Generado con IA</span>
+            <span class="reel-duration">0:30</span>
+            <video muted loop playsinline preload="metadata"
+              poster="https://portfolio-2026-phi-ecru.vercel.app/uploads/hf_20260711_155555_17f40d34-b102-4833-9e41-3adf4fe509e6.png"
+              src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/plataclara.mp4"></video>
+          </div>
+          <div class="reel-body">
+            <div class="reel-title">PlataClara</div>
+            <p class="reel-desc">Explicador de finanzas personales con mascota propia (Pipo, la ardilla). Vertical 9:16.</p>
+            <p class="reel-process"><strong>Cómo se hizo:</strong> Investigación de qué contenido de finanzas funciona en redes, diseño del personaje y del escenario, generación de cada plano en video y edición final con textos y voz en off.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Stack</span>
+        <h2 class="sec-title">Herramientas de <em>edición y generación</em></h2>
+      </div>
+      <div class="stack-row">
+        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoHiggsfield.svg" alt="">Higgsfield AI</span>
+        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoKling.svg" alt="">Kling 3.0</span>
+        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoNanoBanana.svg" alt="">Nano Banana Pro</span>
+        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoCapCut.svg" alt="">CapCut</span>
+        <span class="stack-chip">Premiere Pro</span>
+        <span class="stack-chip">After Effects</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="wrap">
+      <div class="contact-block">
+        <h2>Trabajemos <em>juntos</em></h2>
+        <p>Si tenés una marca, un producto o una idea para convertir en video, escribime y lo charlamos.</p>
+        <div class="contact-ctas">
+          <a class="btn btn--primary" href="mailto:sofizapata2004@gmail.com">Consultar por edición</a>
+          <a class="btn btn--outline" href="https://portfolio-2026-phi-ecru.vercel.app" target="_blank" rel="noopener noreferrer">Ver portfolio completo</a>
+        </div>
+        <p class="footnote">Respuesta en 24-48 h hábiles</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="social-row">
+      <a href="https://www.linkedin.com/in/sofi-zapata-b58427265/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://github.com/sofiazapataa" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="mailto:sofizapata2004@gmail.com">sofizapata2004@gmail.com</a>
+    </div>
+    <span class="fine">© 2026 · Sofi Zapata · Argentina</span>
+  </div>
+</footer>
+
+<script>
+  // Play each work-grid video only while it's on screen, so we're not
+  // streaming 7 clips at once on load (that caused aborted/black loads).
+  var lazyVideos = document.querySelectorAll('main video');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var v = entry.target;
+      if (entry.isIntersecting) v.play().catch(function () {});
+      else v.pause();
+    });
+  }, { threshold: 0.25 });
+  lazyVideos.forEach(function (v) { io.observe(v); });
+</script>
+</body>
+</html>
