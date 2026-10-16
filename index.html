@@ -153,7 +153,11 @@
   }
   .campaign-title { font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--ink); margin: 10px 0 4px; }
   .campaign-desc { font-size: 13px; color: var(--muted); max-width: 620px; line-height: 1.6; }
-  .campaign-clips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 6px; }
+  .clips-strip--campaign { grid-auto-columns: minmax(220px, calc((100% - 28px) / 3)); margin-top: 6px; }
+  .clips-strip--campaign .clip { scroll-snap-align: start; }
+  .campaign-head .strip-nav { align-self: flex-end; }
+  .reel-card--row { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(220px, 300px) 1fr; }
+  .reel-card--row .reel-body { padding: 26px 28px; align-self: center; }
   .clip { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--elevated); }
   .clip-media { position: relative; aspect-ratio: 9/16; background: #000; }
   .clip-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -239,7 +243,8 @@
   @media (max-width: 760px) {
     .case { grid-template-columns: 1fr; }
     .work-grid { grid-template-columns: 1fr; }
-    .campaign-clips { grid-template-columns: 1fr; }
+    .clips-strip--campaign { grid-auto-columns: 72%; }
+    .reel-card--row { grid-template-columns: 1fr; }
     .hero { height: auto; min-height: 100vh; padding-top: 100px; }
   }
 </style>
@@ -309,7 +314,7 @@
       <div class="sec-head">
         <span class="eyebrow">Últimas piezas</span>
         <h2 class="sec-title">Ejemplos <em>recientes</em></h2>
-        <p class="sec-intro">Tres formatos distintos: campaña de producto, contenido de marca con mascota animada y storytelling explicativo — todos generados y editados con IA.</p>
+        <p class="sec-intro">Dos formatos distintos: una campaña de producto en tres piezas y contenido de marca con mascota animada — generados y editados con IA.</p>
       </div>
 
       <div class="work-grid">
@@ -321,8 +326,9 @@
               <h3 class="campaign-title">Furlo</h3>
               <p class="campaign-desc">Campaña de 3 piezas para un guante quita-pelos de mascotas.</p>
             </div>
+            <div class="strip-nav"><button type="button" data-strip="strip-furlo" data-dir="-1" aria-label="Pieza anterior">←</button><button type="button" data-strip="strip-furlo" data-dir="1" aria-label="Pieza siguiente">→</button></div>
           </div>
-          <div class="campaign-clips">
+          <div class="clips-strip clips-strip--campaign" id="strip-furlo">
             <div class="clip">
               <div class="clip-media">
                 <span class="clip-step">01 · Gancho</span>
@@ -363,7 +369,7 @@
           <p class="campaign-process"><strong>Cómo se hizo:</strong> Definición del embudo y del guion de las tres piezas, diseño del producto y de los sets con IA de imagen para mantener el mismo guante y el mismo living en todos los planos, generación de cada plano en video a partir de esas referencias, y armado final en CapCut con una misma paleta de subtítulos, ritmo y música.</p>
         </div>
 
-        <div class="reel-card">
+        <div class="reel-card reel-card--row">
           <div class="reel-media">
             <span class="reel-badge"><span class="dot"></span>Generado con IA</span>
             <span class="reel-duration">0:28</span>
@@ -375,21 +381,6 @@
             <div class="reel-title">Kyvrapets</div>
             <p class="reel-desc">Mascota animada para una marca de cuidado dental canino. Vertical 9:16.</p>
             <p class="reel-process"><strong>Cómo se hizo:</strong> Diseño del personaje y del set con IA de imagen, generación de cada plano en video a partir de esas referencias, y edición, subtítulos y ritmo en CapCut.</p>
-          </div>
-        </div>
-
-        <div class="reel-card">
-          <div class="reel-media">
-            <span class="reel-badge"><span class="dot"></span>Generado con IA</span>
-            <span class="reel-duration">0:30</span>
-            <video muted loop playsinline preload="metadata"
-              poster="https://portfolio-2026-phi-ecru.vercel.app/uploads/hf_20260711_155555_17f40d34-b102-4833-9e41-3adf4fe509e6.png"
-              src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/plataclara.mp4"></video>
-          </div>
-          <div class="reel-body">
-            <div class="reel-title">PlataClara</div>
-            <p class="reel-desc">Explicador de finanzas personales con mascota propia (Pipo, la ardilla). Vertical 9:16.</p>
-            <p class="reel-process"><strong>Cómo se hizo:</strong> Investigación de qué contenido de finanzas funciona en redes, diseño del personaje y del escenario, generación de cada plano en video y edición final con textos y voz en off.</p>
           </div>
         </div>
 
