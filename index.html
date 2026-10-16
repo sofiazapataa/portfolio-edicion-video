@@ -234,12 +234,16 @@
   .clip-tile .sound { opacity: 0.75; }
   .clip-tile--ugc { aspect-ratio: 3/4; }
   .clips-strip--ugc { grid-auto-columns: minmax(220px, calc((100% - 24px) / 3)); }
+  .clips-feature-row { display: grid; grid-template-columns: minmax(220px, 300px) 1fr; gap: 24px; align-items: center; }
+  .clips-feature-row .clips-group-desc { margin: 0 0 12px; }
+  .clips-feature-row strong { color: var(--ink-2); }
   .clip-feature { aspect-ratio: 16/9; margin-bottom: 0; }
 
   @media (max-width: 760px) {
     .clips-strip--wide { grid-auto-columns: 80%; }
     .clips-strip--tall { grid-auto-columns: 44%; }
     .clips-strip--ugc { grid-auto-columns: 72%; }
+    .clips-feature-row { grid-template-columns: 1fr; }
     .clips-grid--mixed { grid-template-columns: 1fr 1fr; }
   }
 
@@ -345,6 +349,20 @@
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-cena-perro.jpg" src="assets/clips/asmr-v-cena-perro.mp4"></video><figcaption><span>Cena del perro</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-noche.jpg" src="assets/clips/asmr-v-perro-noche.mp4"></video><figcaption><span>Perro de noche</span><span class="sound">♪ click</span></figcaption></figure>
           <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-fogata.jpg" src="assets/clips/asmr-v-fogata.mp4"></video><figcaption><span>Fogata</span><span class="sound">♪ click</span></figcaption></figure>
+        </div>
+      </div>
+
+      <div class="clips-group">
+        <div class="clips-group-head">
+          <h3 class="clips-group-title">Inmobiliarias</h3>
+          <span class="clips-group-meta">Amoblamiento virtual · 1 clip</span>
+        </div>
+        <div class="clips-feature-row">
+          <figure class="clip-tile clip-tile--ugc"><video muted loop playsinline preload="none" poster="assets/clips/inmo-amoblamiento.jpg" src="assets/clips/inmo-amoblamiento.mp4"></video><figcaption><span>Departamento · antes y después</span><span class="sound">♪ click</span></figcaption></figure>
+          <div>
+            <p class="clips-group-desc">Pieza para inmobiliarias: a partir de la foto de un departamento vacío, el ambiente se amuebla solo en pocos segundos — sillón, mesa, alfombra, luz y plantas — para mostrar el potencial de la propiedad antes de visitarla.</p>
+            <p class="clips-group-desc"><strong>Cómo se hizo:</strong> imagen del ambiente vacío como punto de partida, versión amoblada generada con IA respetando la arquitectura y la luz, y transición en video entre las dos.</p>
+          </div>
         </div>
       </div>
     </div>
