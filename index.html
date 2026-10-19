@@ -8,6 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('theme'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
 <style>
   :root {
     --bg: #0d0d0e;
@@ -27,7 +35,45 @@
     --font-display: "Space Grotesk", "Manrope", sans-serif;
     --font-serif: "Instrument Serif", Georgia, serif;
     --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --nav-bg: rgba(13, 13, 14, 0.85);
   }
+
+  :root[data-theme="light"] {
+    --bg: #f6f4ef;
+    --surface: #ffffff;
+    --elevated: #efece5;
+    --ink: #141414;
+    --ink-2: #2b2a28;
+    --muted: #5c5852;
+    --subtle: #6f6b64;
+    --border: rgba(20, 20, 20, 0.12);
+    --border-strong: rgba(20, 20, 20, 0.22);
+    --accent: #c4421b;
+    --accent-strong: #a8360f;
+    --accent-ink: #ffffff;
+    --nav-bg: rgba(246, 244, 239, 0.85);
+  }
+  /* El hero va sobre video: siempre con los tokens oscuros */
+  .hero {
+    --ink: #f5f2ea; --ink-2: #d6d3cc; --muted: #c9c5bd;
+    --border: rgba(245, 242, 234, 0.14); --border-strong: rgba(245, 242, 234, 0.3);
+    --accent: #ff7a55; --accent-ink: #0d0d0e;
+    color: var(--ink-2);
+  }
+
+  /* ---------- Idioma y tema ---------- */
+  .prefs { display: flex; align-items: center; gap: 4px; }
+  .pref-btn {
+    height: 30px; min-width: 30px; padding: 0 8px; border-radius: 999px;
+    border: 1px solid var(--border); background: transparent; color: var(--muted);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+    display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .pref-btn:hover { color: var(--ink); border-color: var(--border-strong); }
+  .pref-btn svg { width: 14px; height: 14px; }
+  .pref-btn .icon-sun { display: none; }
+  :root[data-theme="light"] .pref-btn .icon-sun { display: block; }
+  :root[data-theme="light"] .pref-btn .icon-moon { display: none; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
@@ -40,13 +86,18 @@
   /* ---------- Nav ---------- */
   .nav {
     position: sticky; top: 0; z-index: 20;
-    background: rgba(13, 13, 14, 0.85); backdrop-filter: blur(10px);
+    background: var(--nav-bg); backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
   }
   .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
   .nav-brand { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--ink); text-decoration: none; }
   .nav-brand span { color: var(--accent); }
+  .nav-brand .brand-text { color: inherit; }
   .nav-links { display: flex; gap: 22px; align-items: center; }
+  @media (max-width: 600px) {
+    .nav-links { gap: 10px; }
+    .nav-links > a:not(.cta) { display: none; }
+  }
   .nav-links a {
     font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase;
     color: var(--muted); text-decoration: none;
@@ -261,12 +312,13 @@
 
 <nav class="nav">
   <div class="wrap">
-    <a class="nav-brand" href="#top">SZ<span>.</span> Edición de Video</a>
+    <a class="nav-brand" href="#top">SZ<span>.</span> <span class="brand-text" data-i18n="t0">Edición de Video</span></a>
     <div class="nav-links">
       <a href="#clips">Clips</a>
       <a href="#stack">Stack</a>
-      <a href="https://portfolio-2026-phi-ecru.vercel.app" target="_blank" rel="noopener noreferrer">Portfolio principal</a>
-      <a class="cta" href="mailto:sofizapata2004@gmail.com">Escribime</a>
+      <a href="https://portfolio-2026-phi-ecru.vercel.app" target="_blank" rel="noopener noreferrer" data-i18n="t1">Portfolio principal</a>
+      <div class="prefs"><button type="button" class="pref-btn" id="langBtn" aria-label="Switch to English">EN</button><button type="button" class="pref-btn" id="themeBtn" aria-label="Cambiar a modo claro"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></div>
+      <a class="cta" href="mailto:sofizapata2004@gmail.com" data-i18n="t2">Escribime</a>
     </div>
   </div>
 </nav>
@@ -276,12 +328,12 @@
     poster="https://portfolio-2026-phi-ecru.vercel.app/assets/covers/las-golondrinas-poster.png"
     src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/las-golondrinas-hero.mp4"></video>
   <div class="wrap hero-content">
-    <span class="pill"><span class="pulse-dot"></span>Disponible para trabajos freelance · Argentina</span>
-    <h1>Edición de video<br><em>&amp; generación con IA</em></h1>
-    <p class="hero-sub">Genero, edito y armo piezas de video con inteligencia artificial, de la idea al resultado final — reels, campañas de marca y contenido pensado para Instagram, TikTok o presentaciones.</p>
+    <span class="pill" data-i18n="t3"><span class="pulse-dot"></span>Disponible para trabajos freelance · Argentina</span>
+    <h1 data-i18n="t4">Edición de video<br><em>&amp; generación con IA</em></h1>
+    <p class="hero-sub" data-i18n="t5">Genero, edito y armo piezas de video con inteligencia artificial, de la idea al resultado final — reels, campañas de marca y contenido pensado para Instagram, TikTok o presentaciones.</p>
     <div class="hero-ctas">
-      <a class="btn btn--primary" href="#clips">Ver trabajo</a>
-      <a class="btn btn--outline" href="mailto:sofizapata2004@gmail.com">Consultar por edición</a>
+      <a class="btn btn--primary" href="#clips" data-i18n="t6">Ver trabajo</a>
+      <a class="btn btn--outline" href="mailto:sofizapata2004@gmail.com" data-i18n="t7">Consultar por edición</a>
     </div>
   </div>
 </header>
@@ -291,8 +343,8 @@
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">Clips</span>
-        <h2 class="sec-title">Planos y <em>pruebas</em></h2>
-        <p class="sec-intro">Material generado con IA para proyectos en curso y ejercicios de formato: planos sueltos, versiones en distintos formatos y cortes en proceso. Click en un clip para escucharlo con sonido.</p>
+        <h2 class="sec-title" data-i18n="t8">Planos y <em>pruebas</em></h2>
+        <p class="sec-intro" data-i18n="t9">Material generado con IA para proyectos en curso y ejercicios de formato: planos sueltos, versiones en distintos formatos y cortes en proceso. Click en un clip para escucharlo con sonido.</p>
       </div>
 
       <div class="clips-group">
@@ -300,69 +352,69 @@
           <h3 class="clips-group-title">UGC</h3>
           <div class="strip-nav"><button type="button" data-strip="strip-ugc" data-dir="-1" aria-label="Anteriores">←</button><button type="button" data-strip="strip-ugc" data-dir="1" aria-label="Siguientes">→</button></div>
         </div>
-        <p class="clips-group-desc"><span class="clips-group-meta">Ejercicios de formato · 3 clips</span><br>Tres formatos clásicos de UGC generados con IA: un podcast frente al micrófono, una entrevista callejera y una selfie caminando por la calle, todos con estética de contenido grabado con el celular.</p>
+        <p class="clips-group-desc" data-i18n="t10"><span class="clips-group-meta">Ejercicios de formato · 3 clips</span><br>Tres formatos clásicos de UGC generados con IA: un podcast frente al micrófono, una entrevista callejera y una selfie caminando por la calle, todos con estética de contenido grabado con el celular.</p>
         <div class="clips-strip clips-strip--ugc" id="strip-ugc">
-          <figure class="clip-tile clip-tile--ugc"><video muted loop playsinline preload="none" poster="assets/clips/ugc-podcast.jpg" src="assets/clips/ugc-podcast.mp4"></video><figcaption><span>UGC · podcast</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--ugc"><video muted loop playsinline preload="none" poster="assets/clips/ugc-entrevista.jpg" src="assets/clips/ugc-entrevista.mp4"></video><figcaption><span>UGC · entrevista en la calle</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--ugc"><video muted loop playsinline preload="none" poster="assets/clips/ugc-calle.jpg" src="assets/clips/ugc-calle.mp4"></video><figcaption><span>UGC · selfie caminando</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--ugc"><video muted loop playsinline preload="none" poster="assets/clips/ugc-podcast.jpg" src="assets/clips/ugc-podcast.mp4"></video><figcaption><span data-i18n="t11">UGC · podcast</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--ugc"><video muted loop playsinline preload="none" poster="assets/clips/ugc-entrevista.jpg" src="assets/clips/ugc-entrevista.mp4"></video><figcaption><span data-i18n="t12">UGC · entrevista en la calle</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--ugc"><video muted loop playsinline preload="none" poster="assets/clips/ugc-calle.jpg" src="assets/clips/ugc-calle.mp4"></video><figcaption><span data-i18n="t13">UGC · selfie caminando</span><span class="sound">♪ click</span></figcaption></figure>
         </div>
       </div>
 
       <div class="clips-group">
         <div class="clips-group-head">
           <h3 class="clips-group-title">ASMR Outdoor</h3>
-          <span class="clips-group-meta">Proyecto en curso · 24 clips</span>
+          <span class="clips-group-meta" data-i18n="t14">Proyecto en curso · 24 clips</span>
         </div>
-        <p class="clips-group-desc">Serie de videos ASMR de camping con un perro: ruta, llegada al lago, armado del campamento, cocina al aire libre y fogata. Cada plano generado en dos formatos, 16:9 para YouTube y 9:16 para Reels y TikTok, manteniendo el mismo personaje, perro y vehículo.</p>
-        <p class="clips-label">Primer corte · 0:36</p>
-        <figure class="clip-tile clip-feature"><video muted loop playsinline preload="none" poster="assets/clips/asmr-roughcut.jpg" src="assets/clips/asmr-roughcut.mp4"></video><figcaption><span>Video 01 · rough cut</span><span class="sound">♪ click</span></figcaption></figure>
+        <p class="clips-group-desc" data-i18n="t15">Serie de videos ASMR de camping con un perro: ruta, llegada al lago, armado del campamento, cocina al aire libre y fogata. Cada plano generado en dos formatos, 16:9 para YouTube y 9:16 para Reels y TikTok, manteniendo el mismo personaje, perro y vehículo.</p>
+        <p class="clips-label" data-i18n="t16">Primer corte · 0:36</p>
+        <figure class="clip-tile clip-feature"><video muted loop playsinline preload="none" poster="assets/clips/asmr-roughcut.jpg" src="assets/clips/asmr-roughcut.mp4"></video><figcaption><span data-i18n="t17">Video 01 · rough cut</span><span class="sound">♪ click</span></figcaption></figure>
         <div class="strip-head">
-          <div><p class="clips-label">Planos 16:9</p><span class="strip-meta">YouTube · 7 clips</span></div>
+          <div><p class="clips-label" data-i18n="t18">Planos 16:9</p><span class="strip-meta">YouTube · 7 clips</span></div>
           <div class="strip-nav"><button type="button" data-strip="strip-h" data-dir="-1" aria-label="Anteriores">←</button><button type="button" data-strip="strip-h" data-dir="1" aria-label="Siguientes">→</button></div>
         </div>
         <div class="clips-strip clips-strip--wide" id="strip-h">
-          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-ruta.jpg" src="assets/clips/asmr-h-ruta.mp4"></video><figcaption><span>Ruta de montaña</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-copiloto.jpg" src="assets/clips/asmr-h-copiloto.mp4"></video><figcaption><span>Copiloto</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-lago.jpg" src="assets/clips/asmr-h-lago.mp4"></video><figcaption><span>Llegada al lago</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-mesa.jpg" src="assets/clips/asmr-h-mesa.mp4"></video><figcaption><span>Armado de mesa</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-carpa.jpg" src="assets/clips/asmr-h-carpa.mp4"></video><figcaption><span>Carpa de techo</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-perro-bosque.jpg" src="assets/clips/asmr-h-perro-bosque.mp4"></video><figcaption><span>Perro en el bosque</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-cafe.jpg" src="assets/clips/asmr-h-cafe.mp4"></video><figcaption><span>Café en el campamento</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-ruta.jpg" src="assets/clips/asmr-h-ruta.mp4"></video><figcaption><span data-i18n="t21">Ruta de montaña</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-copiloto.jpg" src="assets/clips/asmr-h-copiloto.mp4"></video><figcaption><span data-i18n="t22">Copiloto</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-lago.jpg" src="assets/clips/asmr-h-lago.mp4"></video><figcaption><span data-i18n="t23">Llegada al lago</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-mesa.jpg" src="assets/clips/asmr-h-mesa.mp4"></video><figcaption><span data-i18n="t24">Armado de mesa</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-carpa.jpg" src="assets/clips/asmr-h-carpa.mp4"></video><figcaption><span data-i18n="t25">Carpa de techo</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-perro-bosque.jpg" src="assets/clips/asmr-h-perro-bosque.mp4"></video><figcaption><span data-i18n="t26">Perro en el bosque</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--wide"><video muted loop playsinline preload="none" poster="assets/clips/asmr-h-cafe.jpg" src="assets/clips/asmr-h-cafe.mp4"></video><figcaption><span data-i18n="t27">Café en el campamento</span><span class="sound">♪ click</span></figcaption></figure>
         </div>
         <div class="strip-head">
-          <div><p class="clips-label">Planos 9:16</p><span class="strip-meta">Reels y TikTok · 16 clips</span></div>
+          <div><p class="clips-label" data-i18n="t19">Planos 9:16</p><span class="strip-meta" data-i18n="t20">Reels y TikTok · 16 clips</span></div>
           <div class="strip-nav"><button type="button" data-strip="strip-v" data-dir="-1" aria-label="Anteriores">←</button><button type="button" data-strip="strip-v" data-dir="1" aria-label="Siguientes">→</button></div>
         </div>
         <div class="clips-strip clips-strip--tall" id="strip-v">
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-ruta.jpg" src="assets/clips/asmr-v-ruta.mp4"></video><figcaption><span>Ruta</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-copiloto.jpg" src="assets/clips/asmr-v-copiloto.mp4"></video><figcaption><span>Copiloto</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-lago.jpg" src="assets/clips/asmr-v-lago.mp4"></video><figcaption><span>Lago</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-lago.jpg" src="assets/clips/asmr-v-perro-lago.mp4"></video><figcaption><span>Perro en el lago</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-mesa.jpg" src="assets/clips/asmr-v-mesa.mp4"></video><figcaption><span>Mesa</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-campamento.jpg" src="assets/clips/asmr-v-campamento.mp4"></video><figcaption><span>Campamento</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-bosque.jpg" src="assets/clips/asmr-v-perro-bosque.mp4"></video><figcaption><span>Perro en el bosque</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-desayuno.jpg" src="assets/clips/asmr-v-desayuno.mp4"></video><figcaption><span>Desayuno</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-huevos.jpg" src="assets/clips/asmr-v-huevos.mp4"></video><figcaption><span>Huevos a la plancha</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-pescado.jpg" src="assets/clips/asmr-v-pescado.mp4"></video><figcaption><span>Pescado</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-parrilla.jpg" src="assets/clips/asmr-v-parrilla.mp4"></video><figcaption><span>Parrilla</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-atardecer.jpg" src="assets/clips/asmr-v-atardecer.mp4"></video><figcaption><span>Atardecer</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-descanso.jpg" src="assets/clips/asmr-v-descanso.mp4"></video><figcaption><span>Descanso</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-cena-perro.jpg" src="assets/clips/asmr-v-cena-perro.mp4"></video><figcaption><span>Cena del perro</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-noche.jpg" src="assets/clips/asmr-v-perro-noche.mp4"></video><figcaption><span>Perro de noche</span><span class="sound">♪ click</span></figcaption></figure>
-          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-fogata.jpg" src="assets/clips/asmr-v-fogata.mp4"></video><figcaption><span>Fogata</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-ruta.jpg" src="assets/clips/asmr-v-ruta.mp4"></video><figcaption><span data-i18n="t28">Ruta</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-copiloto.jpg" src="assets/clips/asmr-v-copiloto.mp4"></video><figcaption><span data-i18n="t22">Copiloto</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-lago.jpg" src="assets/clips/asmr-v-lago.mp4"></video><figcaption><span data-i18n="t29">Lago</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-lago.jpg" src="assets/clips/asmr-v-perro-lago.mp4"></video><figcaption><span data-i18n="t30">Perro en el lago</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-mesa.jpg" src="assets/clips/asmr-v-mesa.mp4"></video><figcaption><span data-i18n="t31">Mesa</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-campamento.jpg" src="assets/clips/asmr-v-campamento.mp4"></video><figcaption><span data-i18n="t32">Campamento</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-bosque.jpg" src="assets/clips/asmr-v-perro-bosque.mp4"></video><figcaption><span data-i18n="t26">Perro en el bosque</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-desayuno.jpg" src="assets/clips/asmr-v-desayuno.mp4"></video><figcaption><span data-i18n="t33">Desayuno</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-huevos.jpg" src="assets/clips/asmr-v-huevos.mp4"></video><figcaption><span data-i18n="t34">Huevos a la plancha</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-pescado.jpg" src="assets/clips/asmr-v-pescado.mp4"></video><figcaption><span data-i18n="t35">Pescado</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-parrilla.jpg" src="assets/clips/asmr-v-parrilla.mp4"></video><figcaption><span data-i18n="t36">Parrilla</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-atardecer.jpg" src="assets/clips/asmr-v-atardecer.mp4"></video><figcaption><span data-i18n="t37">Atardecer</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-descanso.jpg" src="assets/clips/asmr-v-descanso.mp4"></video><figcaption><span data-i18n="t38">Descanso</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-cena-perro.jpg" src="assets/clips/asmr-v-cena-perro.mp4"></video><figcaption><span data-i18n="t39">Cena del perro</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-perro-noche.jpg" src="assets/clips/asmr-v-perro-noche.mp4"></video><figcaption><span data-i18n="t40">Perro de noche</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--tall"><video muted loop playsinline preload="none" poster="assets/clips/asmr-v-fogata.jpg" src="assets/clips/asmr-v-fogata.mp4"></video><figcaption><span data-i18n="t41">Fogata</span><span class="sound">♪ click</span></figcaption></figure>
         </div>
       </div>
 
       <div class="clips-group">
         <div class="clips-group-head">
-          <h3 class="clips-group-title">Inmobiliarias</h3>
-          <span class="clips-group-meta">Amoblamiento virtual · 1 clip</span>
+          <h3 class="clips-group-title" data-i18n="t42">Inmobiliarias</h3>
+          <span class="clips-group-meta" data-i18n="t43">Amoblamiento virtual · 1 clip</span>
         </div>
         <div class="clips-feature-row">
-          <figure class="clip-tile clip-tile--ugc"><video muted loop playsinline preload="none" poster="assets/clips/inmo-amoblamiento.jpg" src="assets/clips/inmo-amoblamiento.mp4"></video><figcaption><span>Departamento · antes y después</span><span class="sound">♪ click</span></figcaption></figure>
+          <figure class="clip-tile clip-tile--ugc"><video muted loop playsinline preload="none" poster="assets/clips/inmo-amoblamiento.jpg" src="assets/clips/inmo-amoblamiento.mp4"></video><figcaption><span data-i18n="t44">Departamento · antes y después</span><span class="sound">♪ click</span></figcaption></figure>
           <div>
-            <p class="clips-group-desc">Pieza para inmobiliarias: a partir de la foto de un departamento vacío, el ambiente se amuebla solo en pocos segundos — sillón, mesa, alfombra, luz y plantas — para mostrar el potencial de la propiedad antes de visitarla.</p>
-            <p class="clips-group-desc"><strong>Cómo se hizo:</strong> imagen del ambiente vacío como punto de partida, versión amoblada generada con IA respetando la arquitectura y la luz, y transición en video entre las dos.</p>
+            <p class="clips-group-desc" data-i18n="t45">Pieza para inmobiliarias: a partir de la foto de un departamento vacío, el ambiente se amuebla solo en pocos segundos — sillón, mesa, alfombra, luz y plantas — para mostrar el potencial de la propiedad antes de visitarla.</p>
+            <p class="clips-group-desc" data-i18n="t46"><strong>Cómo se hizo:</strong> imagen del ambiente vacío como punto de partida, versión amoblada generada con IA respetando la arquitectura y la luz, y transición en video entre las dos.</p>
           </div>
         </div>
       </div>
@@ -372,9 +424,9 @@
   <section>
     <div class="wrap">
       <div class="sec-head">
-        <span class="eyebrow">Últimas piezas</span>
-        <h2 class="sec-title">Ejemplos <em>recientes</em></h2>
-        <p class="sec-intro">Dos formatos distintos: una campaña de producto en tres piezas y contenido de marca con mascota animada — generados y editados con IA.</p>
+        <span class="eyebrow" data-i18n="t47">Últimas piezas</span>
+        <h2 class="sec-title" data-i18n="t48">Ejemplos <em>recientes</em></h2>
+        <p class="sec-intro" data-i18n="t49">Dos formatos distintos: una campaña de producto en tres piezas y contenido de marca con mascota animada — generados y editados con IA.</p>
       </div>
 
       <div class="work-grid">
@@ -382,23 +434,23 @@
         <div class="campaign">
           <div class="campaign-head">
             <div>
-              <span class="campaign-tag">Campaña · 3 piezas</span>
+              <span class="campaign-tag" data-i18n="t50">Campaña · 3 piezas</span>
               <h3 class="campaign-title">Furlo</h3>
-              <p class="campaign-desc">Campaña de 3 piezas para un guante quita-pelos de mascotas.</p>
+              <p class="campaign-desc" data-i18n="t51">Campaña de 3 piezas para un guante quita-pelos de mascotas.</p>
             </div>
             <div class="strip-nav"><button type="button" data-strip="strip-furlo" data-dir="-1" aria-label="Pieza anterior">←</button><button type="button" data-strip="strip-furlo" data-dir="1" aria-label="Pieza siguiente">→</button></div>
           </div>
           <div class="clips-strip clips-strip--campaign" id="strip-furlo">
             <div class="clip">
               <div class="clip-media">
-                <span class="clip-step">01 · Gancho</span>
+                <span class="clip-step" data-i18n="t52">01 · Gancho</span>
                 <video muted loop playsinline preload="metadata"
                   poster="https://portfolio-2026-phi-ecru.vercel.app/assets/covers/furlo-01-hook.webp"
                   src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/furlo-01-hook.mp4"></video>
               </div>
               <div class="clip-body">
                 <div class="clip-role">0:18</div>
-                <div class="clip-note">Abre con el problema: el sillón cubierto de pelo y el antes y después en pocos segundos.</div>
+                <div class="clip-note" data-i18n="t54">Abre con el problema: el sillón cubierto de pelo y el antes y después en pocos segundos.</div>
               </div>
             </div>
             <div class="clip">
@@ -410,19 +462,19 @@
               </div>
               <div class="clip-body">
                 <div class="clip-role">0:18</div>
-                <div class="clip-note">Pieza tipo testimonial en un living real, con el producto en uso sobre el perro.</div>
+                <div class="clip-note" data-i18n="t55">Pieza tipo testimonial en un living real, con el producto en uso sobre el perro.</div>
               </div>
             </div>
             <div class="clip">
               <div class="clip-media">
-                <span class="clip-step">03 · Producto</span>
+                <span class="clip-step" data-i18n="t53">03 · Producto</span>
                 <video muted loop playsinline preload="metadata"
                   poster="https://portfolio-2026-phi-ecru.vercel.app/assets/covers/furlo-03-producto.webp"
                   src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/furlo-03-producto.mp4"></video>
               </div>
               <div class="clip-body">
                 <div class="clip-role">0:20</div>
-                <div class="clip-note">Cierre en clave de producto: planos detalle del guante, textura y terminación.</div>
+                <div class="clip-note" data-i18n="t56">Cierre en clave de producto: planos detalle del guante, textura y terminación.</div>
               </div>
             </div>
             <div class="clip">
@@ -434,11 +486,11 @@
               </div>
               <div class="clip-body">
                 <div class="clip-role">0:28</div>
-                <div class="clip-note">Otra marca: mascota animada para cuidado dental canino. Personaje y set diseñados con IA de imagen, planos generados en video y edición en CapCut.</div>
+                <div class="clip-note" data-i18n="t57">Otra marca: mascota animada para cuidado dental canino. Personaje y set diseñados con IA de imagen, planos generados en video y edición en CapCut.</div>
               </div>
             </div>
           </div>
-          <p class="campaign-process"><strong>Cómo se hizo:</strong> Definición del embudo y del guion de las tres piezas, diseño del producto y de los sets con IA de imagen para mantener el mismo guante y el mismo living en todos los planos, generación de cada plano en video a partir de esas referencias, y armado final en CapCut con una misma paleta de subtítulos, ritmo y música.</p>
+          <p class="campaign-process" data-i18n="t58"><strong>Cómo se hizo:</strong> Definición del embudo y del guion de las tres piezas, diseño del producto y de los sets con IA de imagen para mantener el mismo guante y el mismo living en todos los planos, generación de cada plano en video a partir de esas referencias, y armado final en CapCut con una misma paleta de subtítulos, ritmo y música.</p>
         </div>
 
       </div>
@@ -449,7 +501,7 @@
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">Stack</span>
-        <h2 class="sec-title">Herramientas de <em>edición y generación</em></h2>
+        <h2 class="sec-title" data-i18n="t59">Herramientas de <em>edición y generación</em></h2>
       </div>
       <div class="stack-row">
         <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoHiggsfield.svg" alt="">Higgsfield AI</span>
@@ -465,13 +517,13 @@
   <section id="contacto">
     <div class="wrap">
       <div class="contact-block">
-        <h2>Trabajemos <em>juntos</em></h2>
-        <p>Si tenés una marca, un producto o una idea para convertir en video, escribime y lo charlamos.</p>
+        <h2 data-i18n="t60">Trabajemos <em>juntos</em></h2>
+        <p data-i18n="t61">Si tenés una marca, un producto o una idea para convertir en video, escribime y lo charlamos.</p>
         <div class="contact-ctas">
-          <a class="btn btn--primary" href="mailto:sofizapata2004@gmail.com">Consultar por edición</a>
-          <a class="btn btn--outline" href="https://portfolio-2026-phi-ecru.vercel.app" target="_blank" rel="noopener noreferrer">Ver portfolio completo</a>
+          <a class="btn btn--primary" href="mailto:sofizapata2004@gmail.com" data-i18n="t7">Consultar por edición</a>
+          <a class="btn btn--outline" href="https://portfolio-2026-phi-ecru.vercel.app" target="_blank" rel="noopener noreferrer" data-i18n="t62">Ver portfolio completo</a>
         </div>
-        <p class="footnote">Respuesta en 24-48 h hábiles</p>
+        <p class="footnote" data-i18n="t63">Respuesta en 24-48 h hábiles</p>
       </div>
     </div>
   </section>
@@ -518,6 +570,61 @@
       strip.scrollBy({ left: strip.clientWidth * 0.8 * Number(b.getAttribute('data-dir')), behavior: 'smooth' });
     });
   });
+  // Idioma (ES/EN) y tema (claro/oscuro). El español está escrito en el HTML;
+  // el inglés vive acá y se intercambia por data-i18n.
+  var EN = {"t0": "Video Editing", "t1": "Main portfolio", "t2": "Get in touch", "t3": "<span class=\"pulse-dot\"></span>Available for freelance work · Argentina", "t4": "Video editing<br><em>&amp; AI generation</em>", "t5": "I generate, edit and assemble video with artificial intelligence, from idea to final cut — reels, brand campaigns and content made for Instagram, TikTok or presentations.", "t6": "See work", "t7": "Ask about editing", "t8": "Shots and <em>tests</em>", "t9": "AI-generated footage from ongoing projects and format exercises: single shots, versions in different aspect ratios and work-in-progress cuts. Click a clip to hear it with sound.", "t10": "<span class=\"clips-group-meta\">Format exercises · 3 clips</span><br>Three classic UGC formats generated with AI: a podcast at the mic, a street interview and a walking selfie, all with the look of content shot on a phone.", "t11": "UGC · podcast", "t12": "UGC · street interview", "t13": "UGC · walking selfie", "t14": "Ongoing project · 24 clips", "t15": "ASMR camping video series with a dog: the drive, arriving at the lake, setting up camp, outdoor cooking and a campfire. Every shot generated in two formats, 16:9 for YouTube and 9:16 for Reels and TikTok, keeping the same character, dog and vehicle.", "t16": "First cut · 0:36", "t17": "Video 01 · rough cut", "t18": "16:9 shots", "t19": "9:16 shots", "t20": "Reels and TikTok · 16 clips", "t21": "Mountain road", "t22": "Co-pilot", "t23": "Arriving at the lake", "t24": "Setting up the table", "t25": "Rooftop tent", "t26": "Dog in the forest", "t27": "Coffee at camp", "t28": "Road", "t29": "Lake", "t30": "Dog at the lake", "t31": "Table", "t32": "Camp", "t33": "Breakfast", "t34": "Fried eggs", "t35": "Fish", "t36": "Grill", "t37": "Sunset", "t38": "Resting", "t39": "Dog's dinner", "t40": "Dog at night", "t41": "Campfire", "t42": "Real estate", "t43": "Virtual staging · 1 clip", "t44": "Apartment · before and after", "t45": "A piece for real estate agencies: starting from a photo of an empty apartment, the room furnishes itself in a few seconds — sofa, table, rug, lighting and plants — to show the property's potential before a visit.", "t46": "<strong>How it was made:</strong> an image of the empty room as the starting point, a furnished version generated with AI that keeps the architecture and light, and a video transition between the two.", "t47": "Latest work", "t48": "Recent <em>examples</em>", "t49": "Two different formats: a three-piece product campaign and branded content with an animated mascot — generated and edited with AI.", "t50": "Campaign · 3 pieces", "t51": "A 3-piece campaign for a pet hair removal glove.", "t52": "01 · Hook", "t53": "03 · Product", "t54": "Opens with the problem: a couch covered in pet hair and the before and after in seconds.", "t55": "Testimonial-style piece in a real living room, with the product in use on the dog.", "t56": "Product-focused close: detail shots of the glove, its texture and finish.", "t57": "A different brand: animated mascot for canine dental care. Character and set designed with image AI, shots generated as video and edited in CapCut.", "t58": "<strong>How it was made:</strong> Defining the funnel and the script for the three pieces, designing the product and sets with image AI to keep the same glove and living room across every shot, generating each shot as video from those references, and final assembly in CapCut with a consistent subtitle style, pacing and music.", "t59": "Editing and <em>generation tools</em>", "t60": "Let's work <em>together</em>", "t61": "If you have a brand, a product or an idea to turn into video, write to me and let's talk.", "t62": "See full portfolio", "t63": "Reply within 24-48 business hours"};
+  var ARIA_EN = {"Anteriores": "Previous", "Siguientes": "Next", "Pieza anterior": "Previous piece", "Pieza siguiente": "Next piece"};
+  var META_EN = {"title": "Sofi Zapata — Video Editor · AI Video Generation", "description": "Sofi Zapata's video editing portfolio: reels, brand campaigns and AI-generated pieces, freelance video editor."};
+  var i18nNodes = document.querySelectorAll('[data-i18n]');
+  i18nNodes.forEach(function (el) { el.setAttribute('data-es', el.innerHTML); });
+  var ariaNodes = document.querySelectorAll('.strip-nav button');
+  ariaNodes.forEach(function (b) { b.setAttribute('data-aria-es', b.getAttribute('aria-label')); });
+  var metaDesc = document.querySelector('meta[name="description"]');
+  var META_ES = { title: document.title, description: metaDesc.getAttribute('content') };
+  var langBtn = document.getElementById('langBtn');
+  var themeBtn = document.getElementById('themeBtn');
+
+  function save(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
+  function load(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+
+  function setLang(lang) {
+    var en = lang === 'en';
+    i18nNodes.forEach(function (el) {
+      el.innerHTML = en ? EN[el.getAttribute('data-i18n')] : el.getAttribute('data-es');
+    });
+    ariaNodes.forEach(function (b) {
+      var es = b.getAttribute('data-aria-es');
+      b.setAttribute('aria-label', en ? (ARIA_EN[es] || es) : es);
+    });
+    document.documentElement.lang = lang;
+    document.title = en ? META_EN.title : META_ES.title;
+    metaDesc.setAttribute('content', en ? META_EN.description : META_ES.description);
+    langBtn.textContent = en ? 'ES' : 'EN';
+    langBtn.setAttribute('aria-label', en ? 'Cambiar a español' : 'Switch to English');
+    updateThemeLabel();
+  }
+
+  function updateThemeLabel() {
+    var light = document.documentElement.getAttribute('data-theme') === 'light';
+    var en = document.documentElement.lang === 'en';
+    themeBtn.setAttribute('aria-label', en ? (light ? 'Switch to dark mode' : 'Switch to light mode') : (light ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'));
+  }
+
+  langBtn.addEventListener('click', function () {
+    var next = document.documentElement.lang === 'en' ? 'es' : 'en';
+    save('lang', next);
+    setLang(next);
+  });
+  themeBtn.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    save('theme', next);
+    updateThemeLabel();
+  });
+
+  var savedLang = load('lang');
+  if (savedLang !== 'es' && savedLang !== 'en') savedLang = (navigator.language || 'es').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+  setLang(savedLang);
 </script>
 </body>
 </html>
