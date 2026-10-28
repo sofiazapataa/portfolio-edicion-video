@@ -33,12 +33,12 @@ PIEZAS = {
         "archivos": ["reel-raza.mp4", "reel-raza.jpg"],
         "textos": [
             # (integrada, pausada)
-            (">Instagram · 2 reels<", ">Instagram · 1 reel<"),
-            ('"r1": "Instagram · 2 reels"', '"r1": "Instagram · 1 reel"'),
-            (">Dos reels para Instagram de marcas con las que trabajo: una agencia de autos y una marca de cosmética de la que hago venta mayorista.<",
-             ">Reel para Instagram de una marca de cosmética con la que trabajo en venta mayorista.<"),
-            ('"r2": "Two Instagram reels for brands I work with: a car dealership and a skincare brand I sell wholesale."',
-             '"r2": "Instagram reel for a skincare brand I work with as a wholesale seller."'),
+            (">Instagram · 3 reels<", ">Instagram · 2 reels<"),
+            ('"r1": "Instagram · 3 reels"', '"r1": "Instagram · 2 reels"'),
+            (">Tres reels para Instagram de marcas con las que trabajo: una agencia de autos y una marca de cosmética de la que hago venta mayorista.<",
+             ">Dos reels para Instagram de una marca de cosmética con la que trabajo en venta mayorista.<"),
+            ('"r2": "Three Instagram reels for brands I work with: a car dealership and a skincare brand I sell wholesale."',
+             '"r2": "Two Instagram reels for a skincare brand I work with as a wholesale seller."'),
         ],
     },
 }
