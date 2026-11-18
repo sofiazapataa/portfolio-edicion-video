@@ -112,8 +112,11 @@
   .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .hero::after {
     content: ""; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(13,13,14,0.35) 0%, rgba(13,13,14,0.55) 55%, rgba(13,13,14,0.96) 100%);
+    background: linear-gradient(180deg, rgba(13,13,14,0) 0%, rgba(13,13,14,0) 86%, rgba(13,13,14,1) 100%);
   }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  .hero .hero-ctas { margin-top: 14px; }
+  .hero .pill, .hero .btn--outline { background: rgba(13,13,14,0.62); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .hero-content { position: relative; z-index: 2; padding-bottom: 56px; width: 100%; }
   .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); display: inline-block; flex-shrink: 0; }
   .pill {
@@ -343,13 +346,11 @@
 </nav>
 
 <header class="hero" id="top">
-  <video autoplay muted loop playsinline preload="metadata"
-    poster="https://portfolio-2026-phi-ecru.vercel.app/assets/covers/las-golondrinas-poster.png"
-    src="https://portfolio-2026-phi-ecru.vercel.app/assets/videos/las-golondrinas-hero.mp4"></video>
+  <video id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
   <div class="wrap hero-content">
     <span class="pill" data-i18n="t3"><span class="pulse-dot"></span>Disponible para trabajos freelance · Argentina</span>
-    <h1 data-i18n="t4">Edición de video<br><em>&amp; generación con IA</em></h1>
-    <p class="hero-sub" data-i18n="t5">Genero, edito y armo piezas de video con inteligencia artificial, de la idea al resultado final — reels, campañas de marca y contenido pensado para Instagram, TikTok o presentaciones.</p>
+    <h1 class="sr-only" data-i18n="t4">Edición de video<br><em>&amp; generación con IA</em></h1>
+    <p class="hero-sub sr-only" data-i18n="t5">Genero, edito y armo piezas de video con inteligencia artificial, de la idea al resultado final — reels, campañas de marca y contenido pensado para Instagram, TikTok o presentaciones.</p>
     <div class="hero-ctas">
       <a class="btn btn--primary" href="#clips" data-i18n="t6">Ver trabajo</a>
       <a class="btn btn--outline" href="mailto:sofizapata2004@gmail.com" data-i18n="t7">Consultar por edición</a>
@@ -569,6 +570,7 @@
         <span class="stack-chip">After Effects</span>
         <span class="stack-chip">Media Encoder</span>
         <span class="stack-chip">ElevenLabs</span>
+        <span class="stack-chip">Claude · Motion graphics</span>
       </div>
     </div>
   </section>
@@ -661,7 +663,23 @@
     langBtn.textContent = en ? 'ES' : 'EN';
     langBtn.setAttribute('aria-label', en ? 'Cambiar a español' : 'Switch to English');
     updateThemeLabel();
+    updateHeroVideo();
   }
+
+  // Banner animado del hero: 4 versiones (ES/EN × horizontal/vertical)
+  var heroVideo = document.getElementById('heroVideo');
+  var portraitMq = window.matchMedia('(max-aspect-ratio: 1/1)');
+  function updateHeroVideo() {
+    var lang = document.documentElement.lang === 'en' ? 'en' : 'es';
+    var base = 'assets/banner/banner-' + lang + '-' + (portraitMq.matches ? '9x16' : '16x9');
+    if (heroVideo.getAttribute('data-src') === base) return;
+    heroVideo.setAttribute('data-src', base);
+    heroVideo.poster = base + '.jpg';
+    heroVideo.src = base + '.mp4';
+    var p = heroVideo.play(); if (p && p.catch) p.catch(function () {});
+  }
+  if (portraitMq.addEventListener) portraitMq.addEventListener('change', updateHeroVideo);
+  else if (portraitMq.addListener) portraitMq.addListener(updateHeroVideo);
 
   function updateThemeLabel() {
     var light = document.documentElement.getAttribute('data-theme') === 'light';
