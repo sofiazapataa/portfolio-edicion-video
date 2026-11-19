@@ -233,7 +233,29 @@
     background: var(--surface); border: 1px solid var(--border);
     font-family: var(--font-sans); font-weight: 600; font-size: 13px; color: var(--ink-2);
   }
-  .stack-chip img { width: 16px; height: 16px; border-radius: 3px; object-fit: contain; }
+  .stack-chip img, .stack-chip svg { width: 18px; height: 18px; border-radius: 4px; object-fit: contain; flex-shrink: 0; }
+  .stack-chip svg { color: var(--ink); }
+  #stack { padding: 40px 0 28px; scroll-margin-top: 70px; }
+  /* Cinta animada de herramientas */
+  .stack-marquee { overflow: hidden; padding: 16px 0 20px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .stack-track { flex-wrap: nowrap; gap: 14px; width: max-content; animation: stackRun 42s linear infinite; }
+  .stack-marquee:hover .stack-track { animation-play-state: paused; }
+  @keyframes stackRun { to { transform: translateX(calc(-50% - 7px)); } }
+  .stack-track .stack-chip {
+    flex-shrink: 0; padding: 11px 18px; font-size: 14px; border: 1px solid transparent;
+    background: linear-gradient(var(--surface), var(--surface)) padding-box,
+                linear-gradient(135deg, rgba(255,122,85,0.95), rgba(245,242,234,0.28) 45%, rgba(255,122,85,0.7)) border-box;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.45), 0 0 18px rgba(255,122,85,0.16);
+    transition: box-shadow .25s, transform .25s;
+  }
+  .stack-track .stack-chip:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 26px rgba(255,122,85,0.35); transform: translateY(-2px); }
+  :root[data-theme="light"] .stack-track .stack-chip { box-shadow: 0 8px 22px rgba(20,20,20,0.12), 0 0 16px rgba(196,66,27,0.12); }
+  @media (prefers-reduced-motion: reduce) {
+    .stack-marquee { -webkit-mask-image: none; mask-image: none; }
+    .stack-track { animation: none; flex-wrap: wrap; width: auto; }
+    .stack-track [aria-hidden="true"] { display: none; }
+  }
+  #stack .sec-head { margin-bottom: 20px; }
 
   /* ---------- Contact / footer ---------- */
   .contact-block {
@@ -389,6 +411,29 @@
     </div>
   </div>
 </header>
+
+  <section id="stack">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Stack</span>
+        <h2 class="sec-title" data-i18n="t59">Herramientas de <em>edición y generación</em></h2>
+      </div>
+      <div class="stack-marquee">
+        <div class="stack-row stack-track" id="stackTrack">
+        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoHiggsfield.svg" alt="">Higgsfield AI</span>
+        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoKling.svg" alt="">Kling 3.0</span>
+        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoNanoBanana.svg" alt="">Nano Banana Pro</span>
+        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoCapCut.svg" alt="">CapCut</span>
+        <span class="stack-chip"><img src="assets/logos/logo-premiere.png" alt="">Premiere Pro</span>
+        <span class="stack-chip"><img src="assets/logos/logo-aftereffects.png" alt="">After Effects</span>
+        <span class="stack-chip"><img src="assets/logos/logo-mediaencoder.png" alt="">Media Encoder</span>
+        <span class="stack-chip"><img src="assets/logos/logo-illustrator.png" alt="">Illustrator</span>
+        <span class="stack-chip"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M4.6035 0v24h4.9317V0zm9.8613 0v24h4.9317V0z"/></svg>ElevenLabs</span>
+        <span class="stack-chip"><img src="assets/logos/logo-claude.svg" alt="">Claude · Motion graphics</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
 <nav class="cat-bar" aria-label="Categorías">
   <div class="wrap">
@@ -652,26 +697,6 @@
     </div>
   </section>
 
-  <section id="stack">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">Stack</span>
-        <h2 class="sec-title" data-i18n="t59">Herramientas de <em>edición y generación</em></h2>
-      </div>
-      <div class="stack-row">
-        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoHiggsfield.svg" alt="">Higgsfield AI</span>
-        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoKling.svg" alt="">Kling 3.0</span>
-        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoNanoBanana.svg" alt="">Nano Banana Pro</span>
-        <span class="stack-chip"><img src="https://portfolio-2026-phi-ecru.vercel.app/assets/logos/logoCapCut.svg" alt="">CapCut</span>
-        <span class="stack-chip">Premiere Pro</span>
-        <span class="stack-chip">After Effects</span>
-        <span class="stack-chip">Media Encoder</span>
-        <span class="stack-chip">ElevenLabs</span>
-        <span class="stack-chip">Claude · Motion graphics</span>
-      </div>
-    </div>
-  </section>
-
   <section id="contacto">
     <div class="wrap">
       <div class="contact-block">
@@ -801,6 +826,12 @@
     document.documentElement.setAttribute('data-theme', next);
     save('theme', next);
     updateThemeLabel();
+  });
+
+  // Cinta de herramientas: se duplica el contenido para que el desplazamiento sea continuo
+  var stackTrack = document.getElementById('stackTrack');
+  if (stackTrack) Array.prototype.slice.call(stackTrack.children).forEach(function (c) {
+    var k = c.cloneNode(true); k.setAttribute('aria-hidden', 'true'); stackTrack.appendChild(k);
   });
 
   // Barra de categorías: resalta la sección que se está viendo
